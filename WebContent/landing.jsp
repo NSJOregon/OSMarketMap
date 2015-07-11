@@ -5,11 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>MarketMaps</title>
+
 </head>
 <body>
-<h1>WELCOME TO MARKET MAPS</h1>
-<a href="addToCompanyList">Login</a>
 
+
+	<h1>WELCOME TO MARKET MAPS</h1>
+	<a href="addToCompanyList">Login</a>
 
 </body>
 </html>

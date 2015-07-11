@@ -1,3 +1,11 @@
+/*
+ * The company DataBean that has holds company information
+ * All private variables
+ * No methods to process data
+ * Serializable
+ * Getters and setters
+ */
+
 package business;
 
 import java.io.Serializable;

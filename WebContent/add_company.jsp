@@ -12,22 +12,21 @@
 		<table cellspacing="5" border="0">
 		    <tr>
 		        <td align="right">Company Name:</td>
-		        <td><input type="text" name="name" 
-		             value="${user.name}">
+		        <td><input type="text" name="name">
 		        </td>
 		    </tr>
 		    <tr>
 		        <td align="right">City:</td>
-		        <td><input type="text" name="city"
-		             value="${user.city}">
+		        <td><input type="text" name="city">
 		        </td>
 		    </tr>
 		    <tr>
 		        <td align="right">State:</td>
-		        <td><input type="text" name="state"
-		             value="${user.state}">
+		        <td><input type="text" name="state">
 		        </td>
-		     </tr>
+		    </tr>
+		        <td align="right">Select file to upload:</td>
+     	         <td><input type="file" name="uploadFile" /></td>
 		    <tr>
 		        <td>
 		        <input type="hidden" name="addCompany" value="doAdd">

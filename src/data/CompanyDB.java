@@ -1,3 +1,9 @@
+/* CompanyDB.java
+ * Company DB Class adds, removes, changes, and checks whether companies are present
+ * From the connection pool gets a connection and changes the SQL table
+ * 
+ */
+
 package data;
 
 import java.sql.*;

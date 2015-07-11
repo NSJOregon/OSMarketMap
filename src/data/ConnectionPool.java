@@ -1,3 +1,8 @@
+/*
+ * Gets and instance of the Connection Pool and releases resources
+ * And also indicates which DB to connect to
+ */
+
 package data;
 
 import java.sql.*;
