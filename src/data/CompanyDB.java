@@ -6,22 +6,33 @@
 
 package data;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
+
+import org.apache.commons.fileupload.FileItem;
 
 import business.Company;
 
 public class CompanyDB
 {
-    public static int insert(Company company)
+    public static int insert(Company company) throws IOException
     {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
         String query = 
-                "INSERT INTO Company (Name, Latitude, Longitude, Address, City, State, Zipcode, Phonenumber, Email, Description, Owner) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO Company (Name, Latitude, Longitude, Address, City, State, Zipcode, Phonenumber, Email, Description, Owner, Logo) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try
         {        
             ps = connection.prepareStatement(query);
@@ -37,7 +48,7 @@ public class CompanyDB
             ps.setString(9, company.getEmail());
             ps.setString(10, company.getDescription());
             ps.setString(11, company.getOwner());
-               
+            ps.setBinaryStream(12, company.getLogo().getInputStream(), (int) company.getLogo().getSize());   
             return ps.executeUpdate();
         }
         catch(SQLException e)
@@ -149,7 +160,7 @@ public class CompanyDB
         }
     }
     */
-    public static ArrayList<Company> selectCompany()
+    public static ArrayList<Company> selectCompanies()
     {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -160,7 +171,6 @@ public class CompanyDB
         try
         {
             ps = connection.prepareStatement(query);
-        //    ps.setString(1, emailAddress);
             rs = ps.executeQuery();
             
             ResultSetMetaData metaData = rs.getMetaData();
@@ -185,7 +195,33 @@ public class CompanyDB
               	company.setEmail(rs.getString("Email"));
               	company.setDescription(rs.getString("Description"));
               	company.setOwner(rs.getString("Owner"));
-         
+                
+              
+              	File image = new File("Logo.jpg");
+                FileOutputStream fos;
+				try {
+					fos = new FileOutputStream(image);
+				 
+                byte[] buffer = new byte[1024];
+                
+                InputStream is = rs.getBinaryStream("Logo");
+                BufferedImage bufimage=ImageIO.read(is);
+                company.setImg(bufimage);
+                
+                while(is.read(buffer)>0){
+                	fos.write(buffer);
+                	
+                }
+
+                fos.close();
+            }
+            catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e)
+				{}
+				
               	companyList.add(company);
             }
             return companyList;

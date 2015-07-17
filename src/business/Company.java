@@ -8,7 +8,14 @@
 
 package business;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.fileupload.FileItem;
 
 public class Company implements Serializable{
 	
@@ -24,6 +31,8 @@ public class Company implements Serializable{
 	private String email;
 	private String description;
 	private String owner;
+    private FileItem logo; 
+	private BufferedImage bufimg;
     
 	public Company(){
 		ID=0;
@@ -38,10 +47,12 @@ public class Company implements Serializable{
 		email="";
 		description="";
 		owner="";
+		logo=null;
+		bufimg=null;
 		
 	}
 	
-	public Company(int companyID, String companyName, String companyLatitude, String companyLongitude, String companyAddress, String companyCity, String companyState, String companyZipCode, String companyPhoneNumber, String companyEmail, String companyDescription, String companyOwner ){
+	public Company(int companyID, String companyName, String companyLatitude, String companyLongitude, String companyAddress, String companyCity, String companyState, String companyZipCode, String companyPhoneNumber, String companyEmail, String companyDescription, String companyOwner, FileItem companyLogo ){
 		ID= companyID;
 		name= companyName;
 		latitude= companyLatitude;
@@ -54,8 +65,31 @@ public class Company implements Serializable{
 		email= companyEmail;
 		description= companyDescription;
 		owner=companyOwner;
+		logo = companyLogo;
 		
 	}
+
+	
+    public void setLogo(FileItem l)
+    {
+    	logo= l;
+    }
+
+    
+    public FileItem getLogo(){
+       return logo;
+    }
+    
+    public void setImg(BufferedImage l)
+    {
+    	bufimg= l;
+    }
+
+    
+    public BufferedImage getImg(){
+       return bufimg;
+    }
+
 	
     public void setID(int i)
     {

@@ -8,7 +8,7 @@
 
 <body>
 
-	<form action="addToCompanyList" method="post">
+	<form action="addToCompanyList" method="post" enctype="multipart/form-data">
 		<table cellspacing="5" border="0">
 		    <tr>
 		        <td align="right">Company Name:</td>
@@ -25,8 +25,11 @@
 		        <td><input type="text" name="state">
 		        </td>
 		    </tr>
+		    <tr>
 		        <td align="right">Select file to upload:</td>
-     	         <td><input type="file" name="uploadFile" /></td>
+     	        <td><input type="file" name="logo">
+     	        </td>
+     	    </tr>
 		    <tr>
 		        <td>
 		        <input type="hidden" name="addCompany" value="doAdd">

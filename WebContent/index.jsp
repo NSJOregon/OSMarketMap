@@ -1,5 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import ="business.*,java.util.ArrayList"%>
+<%@page import="java.awt.image.BufferedImage"%>
+<%@page import="javax.imageio.ImageIO"%>
+<%@page import="java.io.*"%>
 <html>
 <head>
     <title>Welcome to MarketMaps</title>
@@ -38,6 +41,16 @@
 	for (Company currentCompany:companyList)
 	{
 	%>
+		  <%
+		  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		  ImageIO.write(currentCompany.getImg(), "jpg", baos );
+		  baos.flush();
+		  byte[] imageInByteArray = baos.toByteArray();
+		  baos.close();
+		  String b64 = javax.xml.bind.DatatypeConverter.printBase64Binary(imageInByteArray);
+		  %>
+		  
+		  
 		  <form action="addToCompanyList" method="post">
 		  <tr valign="top">
 		    <td><%= currentCompany.getName()%></td>
@@ -49,8 +62,9 @@
 		    <td><%= currentCompany.getEmail()%></td>
 		    <td><%= currentCompany.getDescription()%></td>
 		    <td><%= currentCompany.getOwner()%></td>
+		    <td><img src="data:image/jpg;base64, <%=b64%>" alt="No Company Logo Added" style="max-height: 100px; max-width: 100px;"/></td>
 		    <td><input type="hidden" name="name" value="<%= currentCompany.getName()%>"></td>
-		    <td><input type="submit" name="removeButton" value="Remove"></td>
+		    <td><input type="submit" name="removeCompany" value="Remove"></td>
 		  </tr>
 		  </form>
 	<%}}
