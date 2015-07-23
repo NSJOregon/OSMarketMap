@@ -1,14 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
-
-<head>
-    <title>MarketMaps add a Company</title>
-</head>
-
+	<head>
+	    <title>MarketMaps add a Company</title>
+	</head>
 <body>
-
-	<form action="addToCompanyList" method="post" enctype="multipart/form-data">
+    <form action="addToCompanyList" method="post" enctype="multipart/form-data">
 		<table cellspacing="5" border="0">
 		    <tr>
 		        <td align="right">Company Name:</td>

@@ -5,7 +5,132 @@
 <%@page import="java.io.*"%>
 <html>
 <head>
-    <title>Welcome to MarketMaps</title>
+
+
+    <title>MarketMaps Site Administration</title>
+
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Geocoding service</title>
+    <style>
+      html, body, #map-canvas {
+        width: 500px;
+        height: 400px;
+        margin: 0px;
+        padding: 0px
+      }
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+	<!--   <script src="js/Map.js"></script>-->
+  
+  <script>
+  	var array = [];
+  </script>
+  
+   <!--  This code goes through the companies in the request object and insert the city and state into 
+   a JavaScrip array that can be used for mapping pins later -->
+	  <%  
+	  ArrayList<Company> companyList = (ArrayList<Company>) request.getAttribute("companyList");
+	  String gfl="";
+	   
+	  if(companyList!=null){
+		for (Company currentCompany:companyList)
+		{
+		  gfl= currentCompany.getCity()+","+ currentCompany.getState(); 
+		%>
+		
+			<script>
+			array.push("<%out.print(gfl);%>")
+			</script>
+		
+		<%
+			}
+	    }
+	   %>
+
+  <!--  This script segment are the function to initilize the map upon loading the page and geocoding the locatio
+     of the companies using the city and state of the company -->  
+  <script>
+	  
+	  var geocoder;
+	  var map;
+	  
+	    function initialize() {
+	    geocoder = new google.maps.Geocoder();
+	    var latlng = new google.maps.LatLng(45.520, -122.682);
+	    
+	    var mapOptions = {
+	      zoom: 8,
+	      center: latlng
+	    }
+	    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	    
+	    
+	    
+	    var xyz = "<%out.print(gfl);%>";
+	    
+	    for (index = 0; index < array.length; ++index) {
+	        codeAddress(array[index]);
+	    }
+	  
+	  }
+	
+	  function codeAddress() {
+	
+		   var address = document.getElementById('address').value;
+	  		
+	  	  geocoder.geocode( { 'address': address}, function(results, status) {
+	    
+	  	  if (status == google.maps.GeocoderStatus.OK) {
+	        map.setCenter(results[0].geometry.location);
+	     
+	        var marker = new google.maps.Marker({
+	            map: map,
+	            position: results[0].geometry.location
+	        });
+	      } else {
+	        alert('Geocode was not successful for the following reason: ' + status);
+	      }
+	    });
+	  
+	  }
+	  
+	  
+	  function codeAddress(address) {
+	
+	 		
+		 	  geocoder.geocode( { 'address': address}, function(results, status) {
+		   
+		 	  if (status == google.maps.GeocoderStatus.OK) {
+		       map.setCenter(results[0].geometry.location);
+		    
+		       var marker = new google.maps.Marker({
+		           map: map,
+		           position: results[0].geometry.location
+		       		});
+		     } else {
+		       alert('Geocode was not successful for the following reason: ' + status);
+		     }
+		   });
+		 
+	 	}
+	  
+        /*Upon loading the window call initialize JavaScript fuction*/
+   		google.maps.event.addDomListener(window, 'load', initialize);
+  	
+      </script>
+
+
 
 </head>
 
@@ -17,9 +142,13 @@
 	%>
 
 <body>
-	<h1>Welcome to MarketMaps</h1>
+	<h1>MarketMaps Site Administration</h1>
+	
+	
+  	<div id="map-canvas"></div>
+	
 	<%
-	ArrayList<Company> companyList = (ArrayList<Company>) request.getAttribute("companyList");
+	//ArrayList<Company> companyList = (ArrayList<Company>) request.getAttribute("companyList");
 	%>
 
 <table border="1" cellpadding="5">

@@ -197,27 +197,28 @@ public class CompanyDB
               	company.setOwner(rs.getString("Owner"));
                 
               
-              	File image = new File("Logo.jpg");
-                FileOutputStream fos;
+           //   	File image = new File("Logo.jpg");
+          //      FileOutputStream fos;
 				try {
-					fos = new FileOutputStream(image);
+			//		fos = new FileOutputStream(image);
 				 
-                byte[] buffer = new byte[1024];
+            //    byte[] buffer = new byte[1024];
                 
                 InputStream is = rs.getBinaryStream("Logo");
+      
                 BufferedImage bufimage=ImageIO.read(is);
                 company.setImg(bufimage);
                 
-                while(is.read(buffer)>0){
-                	fos.write(buffer);
+                //while(is.read(buffer)>0){
+               // 	fos.write(buffer);
                 	
-                }
+               // }
 
-                fos.close();
-            }
-            catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+                //fos.close();
+       //     }
+       //     catch (FileNotFoundException e) {
+//					// TODO Auto-generated catch block
+	//				e.printStackTrace();
 				}
 				catch (IOException e)
 				{}

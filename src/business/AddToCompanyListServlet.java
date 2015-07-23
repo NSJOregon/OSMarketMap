@@ -18,9 +18,7 @@ import javax.servlet.http.*;
 import business.Company;
 import data.CompanyDB;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.*;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -32,25 +30,19 @@ public class AddToCompanyListServlet extends HttpServlet
                           throws ServletException, IOException
     {
 		
-		/*
-		//Gets parameters that may have been be in the request object
 		String deleteCompany=new String("");
-		deleteCompany =request.getParameter("removeButton");
-		String deleteCompanyName=request.getParameter("name");
-		String addCompany = request.getParameter("addCompany");
-		ArrayList<Company> companyList;
-		
-		*/
-		String deleteCompany=new String("");
+		//Get name of company to delete from Database
 		deleteCompany =request.getParameter("removeCompany");
 		String deleteCompanyName=request.getParameter("name");
+
+		//If delete field exists, we want to delete company
 		if(deleteCompany!=null)
 		{
 			CompanyDB.delete(deleteCompanyName);		
 		}
 		
 		
-		//////////////////////////////////////////////////////////////////////
+		//Create company fields for listing all items in index of all companies
 	    Company company = new Company();
 	    Boolean addCompany=false;
 	    Boolean removeCompany=false;
@@ -70,25 +62,24 @@ public class AddToCompanyListServlet extends HttpServlet
         try {			
 		items = upload.parseRequest(request);	
 		
-		// Process the uploaded items
-         
+		// Process the uploaded items in form
+        // We don't know what the strings are in this field so we need an interator to go through them 
     	Iterator<FileItem> iter = items.iterator();
         while (iter.hasNext()) {
-            
-        	
+                    	
         	FileItem item = (FileItem) iter.next();
             
+        	// If items in form is not a field, it will be our uploaded image file
             if (!item.isFormField()) {
             	addCompanyLogo=item;
- //           	company.setLogo(item);
             }
             
+            // If the item is a field, figure out which it is and add it to the company field 
             if(item.isFormField())
             {
             	if (item.getFieldName().equals("name")) {
                     addCompanyName = item.getString();
                     System.out.println("This is the name of the company:" + addCompanyName);
-                    // Do something with the value
                 }
             	else if(item.getFieldName().equals("city"))
             	{
@@ -102,15 +93,15 @@ public class AddToCompanyListServlet extends HttpServlet
             	}
             	else if(item.getFieldName().equals("addCompany"))
             	{
-            	   addCompany=true;	
+                    // If add company field exists add company  
+            		addCompany=true;	
             	}
             	else if(item.getFieldName().equals("removeCompany"))
             	{
             		removeCompany=true;
             	}
             	
-            	////////////////////
-            }
+             }
          }
   		
 		 } catch (FileUploadException e) {
@@ -129,50 +120,7 @@ public class AddToCompanyListServlet extends HttpServlet
         }
         
         
-		//Checks to see if the add company value was added to the request object
-		/*
-		if(addCompany!=null && addCompany.equalsIgnoreCase("doAdd"))
-		{
-			// get parameters from the request
-			String companyName = request.getParameter("name");
-	        String companyCity = request.getParameter("city");
-	        String companyState = request.getParameter("state");
-	        Company company1 = new Company();
-       
-	
-	        //Create a new company object and add the company information
-	        
-	        company.setName(companyName);
-	        company.setCity(companyCity);
-	        company.setState(companyState);
-	        CompanyDB.insert(company);
-	        
-	        //Initializes message and url variables
-	        String message = "";
-	        String url="";
-	        
-	        //Checks to see that all the fields were completed
-	        if(companyName.length()==0||companyCity.length()==0||companyState.length()==0){
-	        	message = "Please fill out all the text boxes! You ASSHOLE!";
-	        	url = "/add_company.jsp";
-	        	
-	        }
-	        else
-	        {
-	            //If all fields are completed, we are setting the URK to go to as the index page to list all 
-	        	//of the companies
-	        	message="";
-	            url = "/index.jsp";
-	        }
-		}//check Add Company
-
-		//Check if the deleteCompany value is in the request object
-		if(deleteCompany!=null)
-		{
-			CompanyDB.delete(deleteCompanyName);		
-		}
-	        
-		*/
+        // Get array of all companies from database
 		ArrayList<Company> companyList = CompanyDB.selectCompanies();
 	    // store the company object in the request object
 	    request.setAttribute("companyList", companyList);
